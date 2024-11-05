@@ -5,7 +5,7 @@ import (
     "math"
     "math/cmplx"
 )
-
+// Superposition of n (positive integer >= 1) states
 type Qudit struct {
     Amplitudes []complex128
 }

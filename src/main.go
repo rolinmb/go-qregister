@@ -24,8 +24,8 @@ func main() {
         }
         //fmt.Printf("src/main.go : main() :: Qubit Test measurement result = %d\n", result)
     }
-    fmt.Printf("src/main.go : main() :: Qubit Test Results after %d iterations :::", N_ITERS)
-    fmt.Printf("\n\t-> Number of Zeros = %d\n\t-> Number of Ones = %d\n", countZeros, countOnes)
+    fmt.Printf("\nsrc/main.go : main() :: Qubit Test Results after %d iterations :::", N_ITERS)
+    fmt.Printf("\n\t-> Number of Zeros = %d\n\t-> Number of Ones = %d", countZeros, countOnes)
     cargs := []complex128{
         complex(math.Sqrt(0.1), 0),  // 10% chance of '0'
         complex(math.Sqrt(0.2), 0),  // 20% chance of '1'
@@ -43,7 +43,7 @@ func main() {
         //fmt.Printf("src/main.go : main() :: Qudit Test measurement result = %d\n", result)
         counts[result]++
     }
-    fmt.Printf("src/main.go : main() :: Qudit Test Results after %d iterations :::", N_ITERS)
+    fmt.Printf("\nsrc/main.go : main() :: Qudit Test Results after %d iterations :::", N_ITERS)
     for i, count := range counts {
         fmt.Printf("\n\t-> Qudit State %d: %d occurrences", i, count)
     }

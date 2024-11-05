@@ -5,7 +5,7 @@ import (
     "math"
     "math/cmplx"
 )
-
+// Superposition of 2 (binary/bit) states
 type Qubit struct {
     C0 complex128
     C1 complex128
