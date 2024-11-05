@@ -34,9 +34,9 @@ func singletonQubit(c0,c1 complex128) (*Qubit, error) {
 
 func (qb *Qubit) measure() int {
     if real(qb.C0) == 1 && imag(qb.C0) == 0 && real(qb.C1) == 0 && imag(qb.C1) == 0 {
-	return 0
+	    return 0
     } else if real(qb.C0) == 0 && imag(qb.C0) == 0 && real(qb.C1) == 1 && imag(qb.C1) == 0 {
-	return 1
+	    return 1
     }
     observation := getObservation()
     prob0 := math.Pow(cmplx.Abs(qb.C0), 2)
@@ -44,12 +44,39 @@ func (qb *Qubit) measure() int {
     if prob0 > prob1 && observation < prob0 {
         return 0
     } else if prob1 > prob0 && observation < prob1 {
-	return 1
+	    return 1
     } else {
-	return int(math.Round(observation))
+	    return int(math.Round(observation))
     }
 }
 
+type Qudit struct {
+    Cnums: []complex128
+} // TODO: Qudit has a list of complex numbers of unkown length (n >= 1)
+
+func singletonQudit(cargs []copmlex128) () {
+    norm := 0.0
+    for _, c := range cargs {
+        norm += math.Pow(cmplx.Abs(c), 2)
+    }
+    if math.Abs(norm - 1.0) < TOLERANCE {
+        qd := &Qudit { Cnums: cargs }
+        return qd, nil
+    }
+    return nil, fmt.Errorf("src/main.go : singletonQudit() :: ERROR ::: Invalid complex number arguments for a valid qudit.")
+}
+
+func (qd *Qudit) measure() int {
+    observation := getObservation()
+    cuumuProb := 0.0
+    for i, c := range qd.Cnums {
+	cuumProb += math.Pow(cmplx.Abs(c), 2)
+	    if observation < cuumProb {
+            return i
+	    }
+    }
+    return len(qd.Cnums) - 1 
+}
 
 func main() {
     c0 := complex(math.Sqrt(3.0)/2.0, 0.0) // 75% chance of '0'
@@ -92,5 +119,24 @@ func main() {
     }
     fmt.Printf("src/main.go : main() :: Qubit Test B Results after %d iterations ::: \n", N_ITERS)
     fmt.Printf("src/main.go : main() ::\n\t-> Number of Zeros = %d\n\t-> Number of Ones = %d\n", countZeros, countOnes)
+    cargs := []complex128{
+        complex(math.Sqrt(0.1), 0),  // 10% chance of '0'
+        complex(math.Sqrt(0.2), 0),  // 20% chance of '1'
+        complex(math.Sqrt(0.3), 0),  // 30% chance of '2'
+        complex(math.Sqrt(0.4), 0),  // 40% chance of '3'
+    }
+    qd, err := singletonQudit(cargs)
+    if err != nil {
+        fmt.Println("src/main.go () : main() :: ERROR ::: Qudit", err)
+        return
+    }
+    counts := make([]int, len(cargs))
+    for i := 0; i < N_ITERS; i++ {
+        result := qd.measure()
+        counts[result]++
+    }
+    fmt.Printf("src/main.go : main() :: Qudit Results after %d iterations:\n", N_ITERS)
+    for i, count := range counts {
+        fmt.Printf("src/main.go : main() :: State %d: %d occurrences\n", i, count)
+    }
 }
-
