@@ -24,9 +24,10 @@ type Qubit struct {
 }
 
 func singletonQubit(c0,c1 complex128) (*Qubit, error) {
-    if math.Round(math.Pow(cmplx.Abs(c0), 2) + math.Pow(cmplx.Abs(c1), 2)) == 1.0 {
-	qb := &Qubit{ C0: c0, C1: c1 }
-	return qb, nil
+    norm := math.Pow(cmplx.Abs(c0), 2) + math.Pow(cmplx.Abs(c1), 2)
+    if math.Abs(norm - 1.0) < 1e-6 {
+        qb := &Qubit{ C0: c0, C1: c1 }
+        return qb, nil
     }
     return nil, fmt.Errorf("src/main.go : singletonQubit() :: ERROR ::: Invalid complex number arguments for a valid qubit.")
 }
@@ -49,28 +50,47 @@ func (qb *Qubit) measure() int {
     }
 }
 
+
 func main() {
     c0 := complex(math.Sqrt(3.0)/2.0, 0.0) // 75% chance of '0'
     c1 := complex(0.0, 0.5) // 25% chance of '1'
-    qb, err := singletonQubit(c0, c1)
+    qba, err := singletonQubit(c0, c1)
     if err != nil {
-	fmt.Println("src/main.go : main() :: ERROR ::: ", err)
-	return
+        fmt.Println("src/main.go : main() :: ERROR ::: Qubit A ", err)
+        return
     }
     countZeros := 0
     countOnes := 0
     for i := 0; i < N_ITERS; i++ {
-	result := qb.measure()
-	if result == 0 {
-	    countZeros += 1
-	} else if result == 1 {
-	    countOnes += 1
-	} else {
-	    continue
-	}
-	//fmt.Printf("src/main.go : main () :: Qubit Measurement Result = %d\n", result)
+        result := qba.measure()
+        if result == 0 {
+            countZeros += 1
+        } else {
+            countOnes += 1
+        }
+        //fmt.Printf("src/main.go : main() :: Qubit Test A Measurement Result = %d\n", result)
     }
-    fmt.Printf("src/main.go : main() :: Qubit Test Restults after %d iterations ::: \n", N_ITERS)
+    fmt.Printf("src/main.go : main() :: Qubit Test A Results after %d iterations ::: \n", N_ITERS)
+    fmt.Printf("src/main.go : main() ::\n\t-> Number of Zeros = %d\n\t-> Number of Ones = %d\n", countZeros, countOnes)
+    c2 := complex(0.0, 1.0/math.Sqrt(6.0)) // 1/6 chance of '0'
+    c3 := complex(0.0, -math.Sqrt(5.0)/math.Sqrt(6.0)) // 5/6 chance of '1'
+    qbb, err := singletonQubit(c2, c3)
+    if err != nil {
+        fmt.Println("src/main.go : main() :: ERROR ::: Qubit B ", err)
+        return
+    }
+    countZeros = 0
+    countOnes = 0
+    for i := 0; i < N_ITERS; i++ {
+        result := qbb.measure()
+        if result == 0 {
+            countZeros += 1
+        } else {
+            countOnes += 1
+        }
+        //fmt.Printf("src/main.go : main() :: Qubit Test B Measurement Result = %d\n", result)
+    }
+    fmt.Printf("src/main.go : main() :: Qubit Test B Results after %d iterations ::: \n", N_ITERS)
     fmt.Printf("src/main.go : main() ::\n\t-> Number of Zeros = %d\n\t-> Number of Ones = %d\n", countZeros, countOnes)
 }
 
