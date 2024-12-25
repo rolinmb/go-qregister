@@ -15,10 +15,10 @@ func (qr *QuantumRegister) TensorProduct() []complex128 {
     return result
 }
 
-func (qr *QuantumRegister) measure() []int {
+func (qr *QuantumRegister) measure(observation float64) []int {
     results := make([]int, len(qr.Qudits))
     for i, qudit := range qr.Qudits {
-        results[i] = qudit.measure()
+        results[i] = qudit.measure(observation)
     }
     return results
 }

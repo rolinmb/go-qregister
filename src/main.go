@@ -16,7 +16,7 @@ func main() {
     countZeros := 0
     countOnes := 0
     for i := 0; i < N_ITERS; i++ {
-        result := qb.measure()
+        result := qb.measure(getObservation())
         if result == 0 {
             countZeros++
         } else {
@@ -39,7 +39,7 @@ func main() {
     }
     counts0 := make([]int, len(cargs0))
     for i := 0; i < N_ITERS; i++ {
-        result := qd0.measure()
+        result := qd0.measure(getObservation())
         counts0[result]++
         //fmt.Printf("src/main.go : main() :: Qudit 0 Test measurement result = %d\n", result)
     }
@@ -61,7 +61,7 @@ func main() {
     }
     counts1 := make([]int, len(cargs1))
     for i := 0; i < N_ITERS; i++ {
-        result := qd1.measure()
+        result := qd1.measure(getObservation())
         counts1[result]++
         //fmt.Printf("src/main.go : main() :: Qudit 1 Test measurement result = %d\n", result)
     }
@@ -79,11 +79,11 @@ func main() {
     fmt.Println("\nsrc/main.go : main() :: Tensor Product of Quantum Register:", jointState)
     qrResults := make(map[string]int)
     for i := 0; i < N_ITERS; i++ {
-        measurement := qr.measure()
+        measurement := qr.measure(getObservation())
         key := fmt.Sprint(measurement)
         qrResults[key]++
     }
-    fmt.Printf("\nsrc/main.go : main() :: Quantum Register results after %d iterations :::", N_ITERS)
+    fmt.Printf("src/main.go : main() :: Quantum Register results after %d iterations :::", N_ITERS)
     for state, count := range qrResults {
         fmt.Printf("\n\t -> Quantum Register State %s: %d occurrences", state, count)
     }

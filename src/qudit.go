@@ -22,8 +22,7 @@ func singletonQudit(cargs []complex128) (*Qudit, error) {
     return nil, fmt.Errorf("src/main.go : singletonQudit() :: ERROR ::: Invalid complex number arguments for a valid qudit.")
 }
 
-func (qd *Qudit) measure() int {
-    observation := getObservation()
+func (qd *Qudit) measure(observation float64) int {
     cuumProb := 0.0
     for i, c := range qd.Amplitudes {
 	    cuumProb += math.Pow(cmplx.Abs(c), 2)

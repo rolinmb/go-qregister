@@ -20,13 +20,12 @@ func singletonQubit(c0,c1 complex128) (*Qubit, error) {
     return nil, fmt.Errorf("src/main.go : singletonQubit() :: ERROR ::: Invalid complex number arguments for a valid qubit.")
 }
 
-func (qb *Qubit) measure() int {
+func (qb *Qubit) measure(observation float64) int {
     if real(qb.C0) == 1 && imag(qb.C0) == 0 && real(qb.C1) == 0 && imag(qb.C1) == 0 {
 	    return 0
     } else if real(qb.C0) == 0 && imag(qb.C0) == 0 && real(qb.C1) == 1 && imag(qb.C1) == 0 {
 	    return 1
     }
-    observation := getObservation()
     prob0 := math.Pow(cmplx.Abs(qb.C0), 2)
     prob1 := math.Pow(cmplx.Abs(qb.C1), 2)
     if prob0 > prob1 && observation < prob0 {
