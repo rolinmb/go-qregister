@@ -81,7 +81,7 @@ func main() {
     qrCounts := make(map[string]int)
     for i := 0; i < N_ITERS; i++ {
         measurement := qr.measure(getObservation())
-        stateKey := fmt.Sprint(measurement) // Convert measurement results into a string key
+        stateKey := fmt.Sprint(measurement)
         qrCounts[stateKey]++
     }
     fmt.Printf("\nsrc/main.go : main() :: Quantum Register results after %d iterations :::\n", N_ITERS)
