@@ -69,22 +69,23 @@ func main() {
     for i, count := range counts1 {
         fmt.Printf("\n\t-> Qudit 1 State %d: %d occurrences", i, count)
     }
-    qr := QuantumRegister {
-        Qudits: []*Qudit{qd0,qd1},
+    qr := QuantumRegister{
+        Qudits: []*Qudit{qd0, qd1},
     }
     jointState := qr.TensorProduct()
     if jointState == nil {
-        fmt.Println("src/main.go : main() :: ERROR ::: No Qudits in Quantum Register to take Tensor Product from.")
+        fmt.Println("src/main.go : main() :: ERROR ::: Tensor product failed. Quantum register is empty.")
+        return
     }
-    fmt.Println("\nsrc/main.go : main() :: Tensor Product of Quantum Register:", jointState)
-    qrResults := make(map[string]int)
+    fmt.Println("\nsrc/main.go : main() :: Tensor Product of Quantum Register:", jointState.Amplitudes)
+    qrCounts := make(map[string]int)
     for i := 0; i < N_ITERS; i++ {
         measurement := qr.measure(getObservation())
-        key := fmt.Sprint(measurement)
-        qrResults[key]++
+        stateKey := fmt.Sprint(measurement) // Convert measurement results into a string key
+        qrCounts[stateKey]++
     }
-    fmt.Printf("src/main.go : main() :: Quantum Register results after %d iterations :::", N_ITERS)
-    for state, count := range qrResults {
-        fmt.Printf("\n\t -> Quantum Register State %s: %d occurrences", state, count)
+    fmt.Printf("\nsrc/main.go : main() :: Quantum Register results after %d iterations :::\n", N_ITERS)
+    for state, count := range qrCounts {
+        fmt.Printf("\t -> Quantum Register State %s: %d occurrences\n", state, count)
     }
 }
