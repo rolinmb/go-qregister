@@ -26,25 +26,47 @@ func main() {
     }
     fmt.Printf("\nsrc/main.go : main() :: Qubit Test Results after %d iterations :::", N_ITERS)
     fmt.Printf("\n\t-> Qubit State 0 = %d occurrences\n\t-> Qubit State 1 = %d occurrences", countZeros, countOnes)
-    cargs := []complex128{
+    cargs0 := []complex128{
         complex(math.Sqrt(0.1), 0),       // 10% chance of '0'
         complex(0, -1.0*math.Sqrt(0.2)),  // 20% chance of '1'
         complex(-1.0*math.Sqrt(0.3), 0),  // 30% chance of '2'
         complex(0, math.Sqrt(0.4)),       // 40% chance of '3'
     }
-    qd, err := singletonQudit(cargs)
+    qd0, err := singletonQudit(cargs0)
     if err != nil {
-        fmt.Println("src/main.go () : main() :: ERROR ::: Qudit", err)
+        fmt.Println("src/main.go () : main() :: ERROR ::: Qudit 0", err)
         return
     }
-    counts := make([]int, len(cargs))
+    counts0 := make([]int, len(cargs0))
     for i := 0; i < N_ITERS; i++ {
-        result := qd.measure()
-        counts[result]++
-        //fmt.Printf("src/main.go : main() :: Qudit Test measurement result = %d\n", result)
+        result := qd0.measure()
+        counts0[result]++
+        //fmt.Printf("src/main.go : main() :: Qudit 0 Test measurement result = %d\n", result)
     }
-    fmt.Printf("\nsrc/main.go : main() :: Qudit Test Results after %d iterations :::", N_ITERS)
-    for i, count := range counts {
-        fmt.Printf("\n\t-> Qudit State %d: %d occurrences", i, count)
+    fmt.Printf("\nsrc/main.go : main() :: Qudit 0 Test Results after %d iterations :::", N_ITERS)
+    for i, count := range counts0 {
+        fmt.Printf("\n\t-> Qudit 0 State %d: %d occurrences", i, count)
+    }
+    cargs1 := []complex128{
+        complex(math.Sqrt(0.05), 0),
+        complex(0, -1.0*math.Sqrt(0.15)),
+        complex(-1.0*math.Sqrt(0.25), 0),
+        complex(math.Sqrt(0.25), 0),
+        complex(0, math.Sqrt(0.3)),
+    }
+    qd1, err := singletonQudit(cargs1)
+    if err != nil {
+        fmt.Println("src/main.go () : main() :: ERROR ::: Qudit1", err)
+        return
+    }
+    counts1 := make([]int, len(cargs1))
+    for i := 0; i < N_ITERS; i++ {
+        result := qd1.measure()
+        counts1[result]++
+        //fmt.Printf("src/main.go : main() :: Qudit 1 Test measurement result = %d\n", result)
+    }
+    fmt.Printf("\nsrc/main.go : main() :: Qudit 1 Test Results after %d iterations :::", N_ITERS)
+    for i, count := range counts1 {
+        fmt.Printf("\n\t-> Qudit 1 State %d: %d occurrences", i, count)
     }
 }
