@@ -8,7 +8,7 @@ import (
 func main() {
     c0 := complex(math.Sqrt(3.0)/2.0, 0.0) // 75% chance of '0'
     c1 := complex(0.0, 0.5) // 25% chance of '1'
-    qba, err := singletonQubit(c0, c1)
+    qb, err := singletonQubit(c0, c1)
     if err != nil {
         fmt.Println("src/main.go : main() :: ERROR ::: Qubit A ", err)
         return
@@ -16,7 +16,7 @@ func main() {
     countZeros := 0
     countOnes := 0
     for i := 0; i < N_ITERS; i++ {
-        result := qba.measure()
+        result := qb.measure()
         if result == 0 {
             countZeros++
         } else {
@@ -25,7 +25,7 @@ func main() {
         //fmt.Printf("src/main.go : main() :: Qubit Test measurement result = %d\n", result)
     }
     fmt.Printf("\nsrc/main.go : main() :: Qubit Test Results after %d iterations :::", N_ITERS)
-    fmt.Printf("\n\t-> Number of Zeros = %d\n\t-> Number of Ones = %d", countZeros, countOnes)
+    fmt.Printf("\n\t-> Qubit State 0 = %d occurrences\n\t-> Qubit State 1 = %d occurrences", countZeros, countOnes)
     cargs := []complex128{
         complex(math.Sqrt(0.1), 0),  // 10% chance of '0'
         complex(math.Sqrt(0.2), 0),  // 20% chance of '1'
@@ -40,8 +40,8 @@ func main() {
     counts := make([]int, len(cargs))
     for i := 0; i < N_ITERS; i++ {
         result := qd.measure()
-        //fmt.Printf("src/main.go : main() :: Qudit Test measurement result = %d\n", result)
         counts[result]++
+        //fmt.Printf("src/main.go : main() :: Qudit Test measurement result = %d\n", result)
     }
     fmt.Printf("\nsrc/main.go : main() :: Qudit Test Results after %d iterations :::", N_ITERS)
     for i, count := range counts {
