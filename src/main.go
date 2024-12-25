@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-    c0 := complex(math.Sqrt(3.0)/2.0, 0.0) // 75% chance of '0'
-    c1 := complex(0.0, 0.5) // 25% chance of '1'
+    c0 := complex(math.Sqrt(0.75), 0.0) // 75% chance of '0'
+    c1 := complex(0.0, -1.0*math.Sqrt(0.25)) // 25% chance of '1'
     qb, err := singletonQubit(c0, c1)
     if err != nil {
         fmt.Println("src/main.go : main() :: ERROR ::: Qubit A ", err)
@@ -27,10 +27,10 @@ func main() {
     fmt.Printf("\nsrc/main.go : main() :: Qubit Test Results after %d iterations :::", N_ITERS)
     fmt.Printf("\n\t-> Qubit State 0 = %d occurrences\n\t-> Qubit State 1 = %d occurrences", countZeros, countOnes)
     cargs := []complex128{
-        complex(math.Sqrt(0.1), 0),  // 10% chance of '0'
-        complex(math.Sqrt(0.2), 0),  // 20% chance of '1'
-        complex(math.Sqrt(0.3), 0),  // 30% chance of '2'
-        complex(math.Sqrt(0.4), 0),  // 40% chance of '3'
+        complex(math.Sqrt(0.1), 0),       // 10% chance of '0'
+        complex(0, -1.0*math.Sqrt(0.2)),  // 20% chance of '1'
+        complex(-1.0*math.Sqrt(0.3), 0),  // 30% chance of '2'
+        complex(0, math.Sqrt(0.4)),       // 40% chance of '3'
     }
     qd, err := singletonQudit(cargs)
     if err != nil {
